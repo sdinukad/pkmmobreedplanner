@@ -1,0 +1,332 @@
+/* --- Root Variables & Basic Reset --- */
+:root {
+    /* Light Theme (Default) */
+    --bg-color: #f4f7f6;
+    --panel-bg: #ffffff;
+    --border-color: #e2e8f0;
+    --text-color: #1a202c;
+    --text-muted: #718096;
+    --text-header: #ffffff;
+    --text-inverted: #ffffff;
+    --primary-color: #4299e1;
+    --primary-hover: #2b6cb0;
+    --accent-color: #48bb78;
+    --accent-hover: #38a169;
+    --danger-color: #f56565;
+    --warning-color: #ecc94b;
+    --override-color: #ed8936;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --shadow-color-light: rgba(0, 0, 0, 0.06);
+    --connector-color: #a0aec0;
+    --input-bg: #ffffff;
+    --input-border: #cbd5e0;
+    --input-hover-bg: #e9ecef;
+
+    /* Stat Colors (Consistent across themes) */
+    --stat-hp: #f56565;  /* Red */
+    --stat-atk: #ed8936; /* Orange */
+    --stat-def: #ecc94b; /* Yellow */
+    --stat-spa: #4299e1; /* Blue */
+    --stat-spd: #48bb78; /* Green */
+    --stat-spe: #ed64a6; /* Pink */
+    --stat-nature: #9f7aea; /* Purple */
+
+    --font-family: 'Inter', sans-serif;
+    --border-radius: 6px;
+}
+
+/* Dark Theme */
+[data-theme="dark"] {
+    --bg-color: #1a202c;
+    --panel-bg: #2d3748;
+    --border-color: #4a5568;
+    --text-color: #e2e8f0;
+    --text-muted: #a0aec0;
+    --text-header: #e2e8f0;
+    --text-inverted: #1a202c;
+    --primary-color: #63b3ed;
+    --primary-hover: #4299e1;
+    --accent-color: #68d391;
+    --accent-hover: #48bb78;
+    /* Keep danger/warning/override similar, maybe slightly desaturated */
+    --danger-color: #fc8181;
+    --warning-color: #f6e05e;
+    --override-color: #f6ad55;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+    --shadow-color-light: rgba(0, 0, 0, 0.3);
+    --connector-color: #718096;
+    --input-bg: #4a5568;
+    --input-border: #718096;
+    --input-hover-bg: #718096;
+}
+
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: var(--font-family);
+    line-height: 1.6;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
+}
+
+/* --- Header --- */
+.main-header {
+    background-color: var(--primary-color);
+    color: var(--text-header); /* Use variable */
+    padding: 1.5rem 1rem; /* Slightly less padding */
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative; /* For positioning theme switch */
+    transition: background-color 0.3s ease;
+}
+.main-header h1 { color: inherit; margin-bottom: 0.5rem; font-weight: 700; }
+.main-header p { color: rgba(255, 255, 255, 0.8); max-width: 600px; margin: auto; margin-bottom: 0; }
+/* Dark theme header text adjustment */
+[data-theme="dark"] .main-header p { color: var(--text-muted); }
+
+/* --- Theme Switch --- */
+.theme-switch-wrapper {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-header); /* Use variable */
+    font-size: 0.9rem;
+}
+[data-theme="dark"] .theme-switch-wrapper { color: var(--text-color); }
+
+.theme-switch {
+    display: inline-block;
+    height: 24px; /* Adjust size */
+    position: relative;
+    width: 50px; /* Adjust size */
+}
+.theme-switch input { display: none; }
+.slider {
+    background-color: rgba(0, 0, 0, 0.2); /* Darker track */
+    bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0;
+    transition: .4s; border-radius: 24px;
+}
+.slider:before {
+    background-color: #fff;
+    bottom: 3px; content: ""; height: 18px; left: 4px; position: absolute;
+    transition: .4s; width: 18px; border-radius: 50%;
+}
+.slider .icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.8em;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.slider .sun { left: 5px; opacity: 1;}
+.slider .moon { right: 5px; }
+
+input:checked + .slider { background-color: #4a5568; } /* Dark mode track color */
+input:checked + .slider:before { transform: translateX(26px); }
+input:checked + .slider .sun { opacity: 0; }
+input:checked + .slider .moon { opacity: 1; }
+
+
+/* --- Container & Panels --- */
+.container { max-width: 1400px; margin: 2rem auto; padding: 0 1rem; display: flex; flex-direction: column; gap: 2rem; }
+.input-panel, .output-panel { background-color: var(--panel-bg); padding: 1.5rem 2rem; border-radius: var(--border-radius); box-shadow: 0 4px 6px -1px var(--shadow-color), 0 2px 4px -1px var(--shadow-color-light); transition: background-color 0.3s ease; }
+.input-panel h2, .output-panel h2 { text-align: left; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 1px solid var(--border-color); font-size: 1.25rem; color: var(--text-color); transition: border-color 0.3s ease, color 0.3s ease; }
+
+/* --- Input Elements --- */
+.input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; }
+.input-group { margin-bottom: 0; } /* Remove bottom margin when in grid */
+.input-group.iv-group { grid-column: 1 / -1; } /* Make IVs span full width */
+.input-group label { font-weight: 600; display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: var(--text-muted); }
+/* IV Selection */
+.iv-selection label { display: inline-flex; align-items: center; margin-right: 10px; margin-bottom: 10px; cursor: pointer; padding: 0.4rem 0.8rem; border: 1px solid var(--input-border); border-radius: var(--border-radius); transition: all 0.2s ease-in-out; font-weight: 500; background-color: var(--input-bg); user-select: none; color: var(--text-color); }
+.iv-selection label span { display: inline-block; margin-left: 0.4rem; }
+.iv-selection input[type="checkbox"] { appearance: none; width: 1em; height: 1em; border: 2px solid var(--input-border); border-radius: 3px; display: inline-block; vertical-align: middle; position: relative; cursor: pointer; transition: all 0.1s ease-in-out; background-color: var(--input-bg);}
+.iv-selection input[type="checkbox"]:checked { background-color: var(--primary-color); border-color: var(--primary-color); }
+.iv-selection input[type="checkbox"]:checked::after { content: '✔'; font-size: 0.8em; color: var(--text-inverted); position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-weight: bold; }
+.iv-selection label:has(input:checked) { background-color: var(--primary-color); border-color: var(--primary-color); color: var(--text-inverted); }
+/* Stat Colors in Labels */
+.iv-selection .stat-hp span { color: var(--stat-hp); } .iv-selection .stat-atk span { color: var(--stat-atk); } .iv-selection .stat-def span { color: var(--stat-def); } .iv-selection .stat-spa span { color: var(--stat-spa); } .iv-selection .stat-spd span { color: var(--stat-spd); } .iv-selection .stat-spe span { color: var(--stat-spe); }
+/* Override stat color when checked */
+.iv-selection label:has(input:checked) span { color: var(--text-inverted) !important; }
+/* Nature & Everstone Cost Inputs */
+#nature-select, #everstone-cost { padding: 0.5rem 0.8rem; border-radius: var(--border-radius); border: 1px solid var(--input-border); font-size: 1rem; background-color: var(--input-bg); color: var(--text-color); min-width: 150px; width: 100%; /* Fill grid cell */ }
+#everstone-cost { appearance: textfield; } /* Hide number spinners if desired */
+#everstone-cost::-webkit-outer-spin-button, #everstone-cost::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* Generate Button */
+button#generate-button { display: block; width: auto; min-width: 200px; padding: 0.75rem 1.5rem; background-color: var(--accent-color); color: var(--text-inverted); border: none; border-radius: var(--border-radius); font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 1.5rem; transition: background-color 0.2s ease-in-out; box-shadow: 0 1px 3px 0 var(--shadow-color), 0 1px 2px 0 var(--shadow-color-light); }
+button#generate-button:hover { background-color: var(--accent-hover); }
+.error-message { color: var(--danger-color); font-weight: 500; margin-top: 1rem; text-align: center; min-height: 1.5em; }
+
+/* --- Output Panel --- */
+.output-panel h2 { display: flex; justify-content: space-between; align-items: center; }
+.zoom-info { font-size: 0.8rem; color: var(--text-muted); font-weight: 400; }
+#total-cost-display { margin-bottom: 2rem; padding: 1rem 1.5rem; background-color: #edf2f7; border: none; border-left: 4px solid var(--accent-color); border-radius: var(--border-radius); text-align: left; }
+[data-theme="dark"] #total-cost-display { background-color: #4a5568; }
+#total-cost-display h3 { margin: 0 0 0.5rem 0; color: var(--text-color); font-size: 1.1rem; }
+#total-cost-value { font-size: 1.5em; font-weight: 700; color: var(--accent-color); }
+#total-cost-display .info-text { font-size: 0.8rem; text-align: left; margin-top: 0.5rem; color: var(--text-muted); }
+.info-text.bottom-info { margin-top: 2rem; font-style: italic; }
+
+/* --- Tree Layout & Zoom/Pan --- */
+#tree-viewport {
+    width: 100%;
+    height: 600px; /* Define a fixed height */
+    overflow: hidden; /* Crucial: hides overflow, enables panning */
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    cursor: grab; /* Indicate pannable */
+    position: relative; /* For positioning absolute elements if needed */
+    background-color: var(--bg-color); /* Match body bg */
+    transition: background-color 0.3s ease;
+}
+#tree-viewport:active { cursor: grabbing; }
+
+.tree-container { /* Renamed from #tree-output ID */
+    /* Apply transforms here for zoom/pan */
+    transform-origin: 0 0; /* Set origin for scaling */
+    transition: transform 0.1s ease-out; /* Smooth transitions slightly */
+    width: fit-content; /* Allow content to determine width */
+    min-width: 100%; /* Ensure it fills viewport initially */
+    padding: 2rem; /* Give space around the tree */
+}
+
+.tree-container > ul { /* Root UL */
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 2rem;
+    /* Padding now applied to tree-container */
+}
+
+/* General list styling reset */
+.tree-container ul { list-style-type: none; padding: 0; margin: 0; position: relative; }
+.tree-container li { display: flex; flex-direction: column; align-items: center; padding: 0; margin: 0; position: relative; }
+
+/* Node Card Styling */
+.node-wrapper {
+    background-color: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 4px var(--shadow-color-light); /* Softer shadow */
+    width: 300px; /* Fixed width */
+    position: relative;
+    z-index: 1;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Children UL */
+.tree-container li > ul {
+    display: flex; justify-content: center; gap: 1.5rem; padding-top: 2rem; width: 100%;
+}
+
+/* Connectors */
+.tree-container li:not(:only-child)::before { /* Vertical down */
+    content: ''; position: absolute; top: -2rem; /* Adjust based on node wrapper bottom margin */
+    left: 50%; transform: translateX(-50%); height: 2rem; width: 2px; background-color: var(--connector-color); z-index: 0; transition: background-color 0.3s ease;
+}
+.tree-container li > ul::before { /* Horizontal */
+    content: ''; position: absolute; top: 0; left: 15%; right: 15%; height: 2px; background-color: var(--connector-color); z-index: 0; transition: background-color 0.3s ease;
+}
+/* Root node adjustments */
+.tree-container > ul > li::before { display: none; }
+
+
+/* --- Node Content Styling --- */
+.node-content { display: block; }
+.node-info { margin-right: 0; }
+.node-header { display: flex; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap;}
+.node-name-input { font-weight: 600; color: var(--primary-color); border: none; background: transparent; padding: 2px 4px; margin: -2px -4px; border-radius: 3px; font-size: 1rem; flex-grow: 1; margin-right: 10px; min-width: 150px; border-bottom: 1px dashed transparent; transition: background-color 0.2s, border-color 0.2s, color 0.3s ease; }
+.node-name-input:hover, .node-name-input:focus { background-color: var(--input-hover-bg); border-bottom: 1px dashed var(--input-border); outline: none; }
+.gender-toggle { font-size: 1.9em; cursor: pointer; padding: 3px 5x; border-radius: 4px; margin-left: 5px; font-weight: bold; user-select: none; transition: background-color 0.2s, color 0.3s ease; }
+.gender-toggle.male { color: var(--stat-spa); } /* Use stat blue */
+.gender-toggle.female { color: var(--stat-spe); } /* Use stat pink */
+.gender-toggle:hover { background-color: var(--input-hover-bg); }
+
+.node-target { font-weight: 600; margin-bottom: 0.5rem; display: block; font-size: 0.9rem; line-height: 1.4; }
+.node-target span { display: inline-block; margin-right: 2px; }
+
+.node-next-step { font-size: 0.9rem; font-weight: 600; margin-top: 0.5rem; margin-bottom: 0.75rem; display: block; border-top: 1px dashed var(--border-color); padding-top: 0.5rem; transition: border-color 0.3s ease; }
+.node-next-step span { font-weight: 700; }
+
+.node-cost-display { font-size: 0.85rem; font-weight: 500; display: block; margin-bottom: 0.75rem; color: var(--text-muted); }
+.node-cost-display .cost-value { font-weight: 600; color: var(--accent-color); }
+.node-cost-display .override-label { color: var(--override-color); font-weight: 600; font-style: normal;}
+
+.node-actions {
+    flex-basis: 135px;
+    text-align: right;
+    align-self: center;
+    display: flex; /* Use flex for buttons */
+    flex-direction: column; /* Stack buttons vertically */
+    gap: 5px; /* Space between buttons */
+}
+.node-actions button {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
+    width: 100%; /* Make buttons fill space */
+    /* margin-top: 0; Removed, using gap */
+}
+
+/* Styles for Cost Buttons (Existing) */
+.set-cost-button { background-color: #cbd5e0; color: var(--text-color); border-color: #cbd5e0; }
+[data-theme="dark"] .set-cost-button { background-color: #718096; color: var(--text-inverted); border-color: #718096; }
+.set-cost-button:hover { background-color: #a0aec0; }
+[data-theme="dark"] .set-cost-button:hover { background-color: #4a5568; }
+.clear-override-button { background-color: var(--warning-color); color: #000; border-color: var(--warning-color); }
+[data-theme="dark"] .clear-override-button { background-color: #ecc94b; color: #000; border-color: #ecc94b; }
+.clear-override-button:hover { background-color: #ddb341; }
+[data-theme="dark"] .clear-override-button:hover { background-color: #d69e2e; }
+
+/* --- NEW Styles for Gender Cost Buttons --- */
+.set-gender-cost-button {
+    background-color: #bee3f8; /* Light blue */
+    color: #2c5282; /* Dark blue text */
+    border-color: #bee3f8;
+}
+[data-theme="dark"] .set-gender-cost-button {
+    background-color: #4a5568; /* Use a darker gray */
+    color: #bee3f8; /* Light blue text */
+    border-color: #4a5568;
+}
+.set-gender-cost-button:hover {
+    background-color: #90cdf4;
+}
+[data-theme="dark"] .set-gender-cost-button:hover {
+    background-color: #718096;
+}
+
+.clear-gender-cost-button {
+    background-color: #fbd38d; /* Light orange */
+    color: #975a16; /* Dark orange text */
+    border-color: #fbd38d;
+    font-size: 0.75em; /* Slightly smaller to fit text */
+    white-space: normal; /* Allow text wrapping */
+    line-height: 1.2;
+    padding: 0.4rem 0.6rem; /* Adjust padding */
+}
+[data-theme="dark"] .clear-gender-cost-button {
+    background-color: #f6ad55; /* Orange */
+    color: #000;
+    border-color: #f6ad55;
+}
+.clear-gender-cost-button:hover {
+    background-color: #f6ad55;
+}
+[data-theme="dark"] .clear-gender-cost-button:hover {
+    background-color: #ed8936;
+}
+
+/* Stat & Item Colors */
+.stat-hp, .item-Power\.Weight { color: var(--stat-hp); } .stat-atk, .item-Power\.Bracer { color: var(--stat-atk); } .stat-def, .item-Power\.Band { color: var(--stat-def); } .stat-spa { color: var(--stat-spa); } .stat-spd, .item-Power\.Lens { color: var(--stat-spd); } .stat-spe, .item-Power\.Anklet { color: var(--stat-spe); } .stat-nature, .item-everstone { color: var(--stat-nature); }

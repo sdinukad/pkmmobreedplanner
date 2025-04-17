@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokeMMO Visual Breeding Planner</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body data-theme="light">
+    <header class="main-header">
+        <h1>PokeMMO Visual Breeding Planner</h1>
+        <p>Plan your perfect Pokémon breeds with cost estimation and tracking.</p>
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch" for="theme-checkbox">
+                <input type="checkbox" id="theme-checkbox" />
+                <div class="slider round">
+                    <span class="icon sun">☀️</span>
+                    <span class="icon moon">🌙</span>
+                </div>
+            </label>
+            <span>Dark Mode</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="input-panel">
+            <h2>Configuration</h2>
+            <div class="input-grid">
+                <div class="input-group iv-group">
+                    <label>Desired 31 IVs:</label>
+                    <div class="iv-selection">
+                        <label><input type="checkbox" name="iv" value="HP"> <span>HP</span></label>
+                        <label><input type="checkbox" name="iv" value="Atk"> <span>Atk</span></label>
+                        <label><input type="checkbox" name="iv" value="Def"> <span>Def</span></label>
+                        <label><input type="checkbox" name="iv" value="SpA"> <span>SpA</span></label>
+                        <label><input type="checkbox" name="iv" value="SpD"> <span>SpD</span></label>
+                        <label><input type="checkbox" name="iv" value="Spe"> <span>Spe</span></label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="nature-select">Desired Nature:</label>
+                    <select id="nature-select">
+                        <option value="">Any / None</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="everstone-cost">Everstone Cost (¥):</label>
+                    <input type="number" id="everstone-cost" value="5000" min="0" step="100">
+                </div>
+             </div>
+
+            <button id="generate-button">Generate Breeding Plan</button>
+            <div id="error-output" class="error-message"></div>
+        </section>
+
+        <section id="breeding-plan-section" class="output-panel" style="display: none;">
+            <div id="total-cost-display">
+                <h3>Overall Estimated Cost</h3>
+                <span id="total-cost-value">¥0</span>
+                <!-- **** Updated Info Text **** -->
+                <p class="info-text">Includes item costs + gender fee (default ¥<span id="gender-cost-display">5,000</span>, or custom) + overrides.</p>
+            </div>
+            <h2>Breeding Plan <span class="zoom-info">(Scroll to Zoom, Drag to Pan)</span></h2>
+            <div id="tree-viewport">
+                <div id="tree-output" class="tree-container">
+                    <!-- Tree generated here -->
+                </div>
+            </div>
+             <p class="info-text bottom-info">Edit names/genders/costs. Use 'Set Gender Cost' for step-specific fees.</p>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
