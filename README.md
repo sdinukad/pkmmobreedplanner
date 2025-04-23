@@ -6,3 +6,4 @@
 * notes section for user notes
 * make gender select cost a multiple options instead of any value
 * download current tree as jpg
+* change stat colors to match in game bracers
