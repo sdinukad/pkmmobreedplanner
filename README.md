@@ -10,3 +10,4 @@
 * expand all and collapse all not obvious
 * gender and expand card not obvious
 * might need demo video for usage help
+* checkbox to show user has completed that step to help user keep track
